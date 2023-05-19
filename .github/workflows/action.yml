@@ -1,5 +1,13 @@
 name: Everyday Lotto
 
+env:
+  DH_LOTTERY_USER_ID: '${{ secrets.DH_LOTTERY_USER_ID }}'
+  DH_LOTTERY_PASSWORD: '${{ secrets.DH_LOTTERY_PASSWORD }}'
+  AMOUNT_PER_DAY: '${{ vars.AMOUNT_PER_DAY }}'
+  BUY_PER_WEEK: '${{ vars.BUY_PER_WEEK }}'
+  SLACK_BOT_TOKEN: '${{ vars.SLACK_BOT_TOKEN }}'
+  SLACK_CHANNEL_ID: '${{ vars.SLACK_CHANNEL_ID }}'
+
 on:
   push:
   schedule:
@@ -20,9 +28,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build --if-present
+      - name: check environment
+        run: |
+          echo $DH_LOTTERY_USER_ID $DH_LOTTERY_PASSWORD $AMOUNT_PER_DAY $BUY_PER_WEEK $SLACK_BOT_TOKEN $SLACK_CHANNEL_ID
+        env:
+          DH_LOTTERY_USER_ID: '${{ secrets.DH_LOTTERY_USER_ID }}'
+          DH_LOTTERY_PASSWORD: '${{ secrets.DH_LOTTERY_PASSWORD }}'
       - run: npm run job
         env:
-          TEST: 'HELLO WORLD'
           DH_LOTTERY_USER_ID: '${{ secrets.DH_LOTTERY_USER_ID }}'
           DH_LOTTERY_PASSWORD: '${{ secrets.DH_LOTTERY_PASSWORD }}'
           AMOUNT_PER_DAY: '${{ vars.AMOUNT_PER_DAY }}'
