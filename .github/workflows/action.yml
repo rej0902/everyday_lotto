@@ -3,10 +3,10 @@ name: Everyday Lotto
 env:
   DH_LOTTERY_USER_ID: ${{ secrets.DH_LOTTERY_USER_ID }}
   DH_LOTTERY_PASSWORD: ${{ secrets.DH_LOTTERY_PASSWORD }}
-  AMOUNT_PER_DAY: ${{ vars.env.AMOUNT_PER_DAY }}
-  BUY_PER_WEEK: ${{ vars.env.BUY_PER_WEEK }}
-  SLACK_BOT_TOKEN: ${{ vars.env.SLACK_BOT_TOKEN }}
-  SLACK_CHANNEL_ID: ${{ vars.env.SLACK_CHANNEL_ID }}
+  AMOUNT_PER_DAY: ${{ vars.AMOUNT_PER_DAY }}
+  BUY_PER_WEEK: ${{ vars.BUY_PER_WEEK }}
+  SLACK_BOT_TOKEN: ${{ vars.SLACK_BOT_TOKEN }}
+  SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
     - cron: '55 1 * * 1-5'
 
 jobs:
-  build:
+  lotto:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,17 +28,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build --if-present
+      - name: check secrets
+        run: echo "The DH key is:${{secrets.DH_LOTTERY_USER_ID}}"
       - name: check environment
         run: |
           echo $DH_LOTTERY_USER_ID $DH_LOTTERY_PASSWORD $AMOUNT_PER_DAY $BUY_PER_WEEK $SLACK_BOT_TOKEN $SLACK_CHANNEL_ID
         env:
-          DH_LOTTERY_USER_ID: '${{ secrets.DH_LOTTERY_USER_ID }}'
-          DH_LOTTERY_PASSWORD: '${{ secrets.DH_LOTTERY_PASSWORD }}'
+          DH_LOTTERY_USER_ID: ${{ env.DH_LOTTERY_USER_ID }}
+          DH_LOTTERY_PASSWORD: ${{ env.DH_LOTTERY_PASSWORD }}
       - run: npm run job
-        env:
-          DH_LOTTERY_USER_ID: '${{ secrets.DH_LOTTERY_USER_ID }}'
-          DH_LOTTERY_PASSWORD: '${{ secrets.DH_LOTTERY_PASSWORD }}'
-          AMOUNT_PER_DAY: '${{ vars.AMOUNT_PER_DAY }}'
-          BUY_PER_WEEK: '${{ vars.BUY_PER_WEEK }}'
-          SLACK_BOT_TOKEN: '${{ vars.SLACK_BOT_TOKEN }}'
-          SLACK_CHANNEL_ID: '${{ vars.SLACK_CHANNEL_ID }}'
