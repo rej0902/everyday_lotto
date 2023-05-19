@@ -1,5 +1,13 @@
 name: Everyday Lotto
 
+env:
+  DH_LOTTERY_USER_ID: ${{ secrets.DH_LOTTERY_USER_ID }}
+  DH_LOTTERY_PASSWORD: ${{ secrets.DH_LOTTERY_PASSWORD }}
+  AMOUNT_PER_DAY: ${{ github.env.AMOUNT_PER_DAY }}
+  BUY_PER_WEEK: ${{ github.env.BUY_PER_WEEK }}
+  SLACK_BOT_TOKEN: ${{ github.env.SLACK_BOT_TOKEN }}
+  SLACK_CHANNEL_ID: ${{ github.env.SLACK_CHANNEL_ID }}
+
 on:
   push:
   schedule:
