@@ -109,18 +109,16 @@ const lotto = async () => {
     const b64string: string = (await result?.screenshot({ encoding: 'base64' })) as string;
 
     //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
-
-    sendImageToSlack({
-      base64fromImage: b64string,
-    });
+    // sendImageToSlack({
+    //   base64fromImage: b64string,
+    // });
 
     console.log('[11] job completed!');
   } catch (error) {
     //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
-
-    sendMessageToSlack({
-      message: '이번주 로또 구매는 실패했습니다.....',
-    });
+    // sendMessageToSlack({
+    //   message: '이번주 로또 구매는 실패했습니다.....',
+    // });
     console.error('[-] job failed!');
   }
 
