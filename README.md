@@ -43,6 +43,33 @@ Incoming-Webhook 대신 Slack App을 생성하시고 토큰을 생성해야됩�
 
 https://api.slack.com/messaging/webhooks
 
+```
+$ npm install
+$ npm run job
+
+> everyday_lotto@1.0.0 job
+> npx ts-node app.ts
+
+=== 오 늘 의 로 또 ===
+USER_ID => ******
+USER_PASSWORD => ************
+envionment loaded!
+[1] navigate to DH LOTTERY login page...
+[2] prepare login...
+[3] try login...
+[4] login completed!
+[5] waiting for buy a game...
+[6] 사장님 자동 1게임요~~
+[7] waiting for confirm...
+[8] confirming...
+[9] remove unnecessary elements...
+[10] screenshot...
+SLACK_BOT_TOKEN => xoxb-000000000000-000000000000-000000000000000000000000
+SLACK_CHANNEL => C0000000000
+[11] job completed!
+[C0000000000] Send image to slack completed!
+```
+
 ## Github Actions 을 통한 자동화 시스템 구축
 
 .github/workflows/action.yml
