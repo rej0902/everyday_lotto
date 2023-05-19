@@ -21,7 +21,6 @@ const ENV_USER_PW = process.env.DH_LOTTERY_PASSWORD;
 const ENV_AMOUNT = process.env.AMOUNT_PER_DAY || '1';
 
 const lotto = async () => {
-  console.log(process.env);
   console.log('=== 오 늘 의 로 또 ===');
   if (ENV_USER_ID === undefined || ENV_USER_PW === undefined) {
     throw new Error(`DH_LOTTERY_USER_ID, DH_LOTTERY_PASSWORD must be defined in .env file`);
