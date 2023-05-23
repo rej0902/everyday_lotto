@@ -85,6 +85,10 @@ const lotto = async () => {
 
   console.log('[8] confirming...');
 
+  let bodyHTML = await page.evaluate(() => document.documentElement.outerHTML);
+
+  console.log(bodyHTML);
+
   await page.click(SELECTOR_BUTTONS_FOR_CONFIRM);
 
   try {
