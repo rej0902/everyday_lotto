@@ -85,6 +85,7 @@ const lotto = async () => {
 
   if (confirm) {
     console.log('[8] confirming...');
+    console.log(confirm);
     await confirm.evaluate((e) => {
       console.log(e);
       e.click();
