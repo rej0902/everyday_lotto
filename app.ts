@@ -38,7 +38,7 @@ const lotto = async () => {
   console.log(`USER_PASSWORD => ${USER_PW.replace(/./g, '*')}`);
   console.log(`envionment loaded!`);
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   console.log('[1] navigate to DH LOTTERY login page...');
@@ -85,7 +85,10 @@ const lotto = async () => {
 
   if (confirm) {
     console.log('[8] confirming...');
-    await confirm.evaluate((e) => e.click());
+    await confirm.evaluate((e) => {
+      console.log(e);
+      e.click();
+    });
   }
 
   try {
