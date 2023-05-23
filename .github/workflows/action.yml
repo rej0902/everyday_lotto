@@ -8,6 +8,7 @@ env:
   SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
 
 on:
+  push:
   schedule:
     - cron: '55 1 * * 1-5'
 
