@@ -41,7 +41,11 @@ const lotto = async () => {
   console.log(`envionment loaded!`);
 
   const browser = await puppeteer.launch({ headless: 'new' });
+
   const page = await browser.newPage();
+  await page.setUserAgent(
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36'
+  );
 
   console.log('[1] navigate to DH LOTTERY login page...');
 
@@ -80,6 +84,9 @@ const lotto = async () => {
   await page.click(SELECTOR_BUTTON_FOR_BUY);
 
   console.log('[7] waiting for confirm...');
+  const a = await page.$$(SELECTOR_BUTTONS_FOR_CONFIRM);
+
+  console.log(a);
 
   await page.waitForSelector(SELECTOR_BUTTONS_DIV);
 
