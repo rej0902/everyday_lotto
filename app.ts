@@ -92,10 +92,10 @@ const lotto = async () => {
   }
 
   try {
-    // await page.waitForSelector('div#report', {
-    //   visible: true,
-    //   timeout: 1000,
-    // });
+    await page.waitForSelector('#popReceipt', {
+      visible: true,
+      timeout: 1000,
+    });
 
     await page.evaluate(() => {
       console.log('[9] remove unnecessary elements...');
@@ -107,17 +107,21 @@ const lotto = async () => {
 
     const result = await page.$('#popReceipt');
 
-    console.log('[10] screenshot...');
+    console.log(result);
 
-    const b64string: string = (await result?.screenshot({ encoding: 'base64' })) as string;
+    if (result) {
+      console.log('[10] screenshot...');
 
-    //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
+      const b64string: string = (await result?.screenshot({ encoding: 'base64' })) as string;
 
-    sendImageToSlack({
-      base64fromImage: b64string,
-    });
+      //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
 
-    console.log('[11] job completed!');
+      sendImageToSlack({
+        base64fromImage: b64string,
+      });
+
+      console.log('[11] job completed!');
+    }
   } catch (error) {
     //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
 
