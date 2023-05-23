@@ -13,7 +13,9 @@ const SELECTOR_BUTTON_FOR_WAY_TO_BUY = 'ul#tabWay2Buy > li:nth-child(2) > a';
 const SELECTOR_SELECT_FOR_AMOUNT = 'select#amoundApply';
 const SELECTOR_BUTTON_FOR_AMOUNT = 'input#btnSelectNum';
 const SELECTOR_BUTTON_FOR_BUY = 'input#btnBuy';
-const SELECTOR_BUTTON_FOR_CONFIRM = 'input[value="확인"]';
+
+const SELECTOR_BUTTONS_DIV = '#popupLayerConfirm > div.box > div.btns';
+const SELECTOR_BUTTONS_FOR_CONFIRM = '#popupLayerConfirm > div.box > div.btns > input';
 
 const ENV_USER_ID = process.env.DH_LOTTERY_USER_ID;
 const ENV_USER_PW = process.env.DH_LOTTERY_PASSWORD;
@@ -79,68 +81,53 @@ const lotto = async () => {
 
   console.log('[7] waiting for confirm...');
 
-  await page.waitForSelector('#popupLayerConfirm > box > btns');
+  await page.waitForSelector(SELECTOR_BUTTONS_DIV);
 
-  const a = await page.$('#popupLayerConfirm > box > btns > input');
+  console.log('[8] confirming...');
 
-  console.log(a);
+  await page.click(SELECTOR_BUTTONS_FOR_CONFIRM);
 
-  // const confirm = confirm_buttons?.pop();
+  try {
+    await page.waitForSelector('#popReceipt', {
+      visible: true,
+      timeout: 1000,
+    });
 
-  // if (confirm) {
-  //   console.log('[8] confirming...');
-  //   console.log(confirm);
-  //   await confirm.focus();
-  //   console.log(await confirm.isVisible());
-  //   console.log(await confirm.isIntersectingViewport());
+    await page.evaluate(() => {
+      console.log('[9] remove unnecessary elements...');
+      document.querySelector('div.n720PlusBanner')?.remove();
+      document.querySelector('#popReceipt h2')?.remove();
+      document.querySelector('input#closeLayer')?.remove();
+      document.querySelector('div.explain')?.remove();
+    });
 
-  //   // await confirm.evaluate((e) => {
-  //   //   console.log(e);
-  //   //   e.click();
-  //   // });
-  // }
+    const result = await page.$('#popReceipt');
 
-  // try {
-  //   await page.waitForSelector('#popReceipt', {
-  //     visible: true,
-  //     timeout: 1000,
-  //   });
+    console.log(result);
 
-  //   await page.evaluate(() => {
-  //     console.log('[9] remove unnecessary elements...');
-  //     document.querySelector('div.n720PlusBanner')?.remove();
-  //     document.querySelector('#popReceipt h2')?.remove();
-  //     document.querySelector('input#closeLayer')?.remove();
-  //     document.querySelector('div.explain')?.remove();
-  //   });
+    if (result) {
+      console.log('[10] screenshot...');
 
-  //   const result = await page.$('#popReceipt');
+      const b64string: string = (await result?.screenshot({ encoding: 'base64' })) as string;
 
-  //   console.log(result);
+      //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
 
-  //   if (result) {
-  //     console.log('[10] screenshot...');
+      sendImageToSlack({
+        base64fromImage: b64string,
+      });
 
-  //     const b64string: string = (await result?.screenshot({ encoding: 'base64' })) as string;
+      console.log('[11] job completed!');
+    }
+  } catch (error) {
+    //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
 
-  //     //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
+    sendMessageToSlack({
+      message: '이번주 로또 구매는 실패했습니다.....',
+    });
+    console.error('[-] job failed!');
+    console.error(error);
+  }
 
-  //     sendImageToSlack({
-  //       base64fromImage: b64string,
-  //     });
-
-  //     console.log('[11] job completed!');
-  //   }
-  // } catch (error) {
-  //   //슬랙을 사용하려면 해당 주석을 풀고, .env 파일에 SLACK_BOT_TOKEN을 추가해야 합니다.
-
-  //   sendMessageToSlack({
-  //     message: '이번주 로또 구매는 실패했습니다.....',
-  //   });
-  //   console.error('[-] job failed!');
-  //   console.error(error);
-  // }
-
-  // await browser.close();
+  await browser.close();
 };
 lotto();
