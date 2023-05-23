@@ -81,13 +81,16 @@ const lotto = async () => {
 
   const confirm_buttons = await page.$$(SELECTOR_BUTTON_FOR_CONFIRM);
 
+  console.log(confirm_buttons);
+
   const confirm = confirm_buttons?.pop();
 
   if (confirm) {
     console.log('[8] confirming...');
     console.log(confirm);
-    const a = await confirm.clickablePoint();
-    console.log(a);
+    console.log(await confirm.isVisible());
+    console.log(await confirm.isIntersectingViewport());
+
     await confirm.evaluate((e) => {
       console.log(e);
       e.click();
