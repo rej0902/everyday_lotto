@@ -88,6 +88,7 @@ const lotto = async () => {
   if (confirm) {
     console.log('[8] confirming...');
     console.log(confirm);
+    await confirm.focus();
     console.log(await confirm.isVisible());
     console.log(await confirm.isIntersectingViewport());
 
