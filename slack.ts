@@ -13,7 +13,7 @@ const sendImageToSlack = ({
 
   filename = 'lotto.png',
   filetype = 'image/png',
-  message = '설레는 토요일! 오늘의 로또가 발급됐읍니다. (https://dhlottery.co.kr/myPage.do?method=lottoBuyListView)',
+  message = '오늘의 로또가 발급됐읍니다. (https://dhlottery.co.kr/myPage.do?method=lottoBuyListView)',
   title = '오늘의 로또',
 }: {
   base64fromImage: string;

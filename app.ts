@@ -17,10 +17,15 @@ const SELECTOR_BUTTON_FOR_BUY = 'input#btnBuy';
 const SELECTOR_BUTTONS_DIV = '#popupLayerConfirm > div.box > div.btns';
 const SELECTOR_BUTTONS_FOR_CONFIRM = '#popupLayerConfirm > div.box > div.btns > input';
 
+const USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36';
+
 const ENV_USER_ID = process.env.DH_LOTTERY_USER_ID;
 const ENV_USER_PW = process.env.DH_LOTTERY_PASSWORD;
 
 const ENV_AMOUNT = process.env.AMOUNT_PER_DAY || '1';
+
+const getDay = () => ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()] + '요일';
 
 const lotto = async () => {
   console.log('=== 오 늘 의 로 또 ===');
@@ -44,9 +49,7 @@ const lotto = async () => {
 
   const page = await browser.newPage();
 
-  await page.setUserAgent(
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36'
-  );
+  await page.setUserAgent(USER_AGENT);
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'platform', {
       get: function () {
@@ -101,10 +104,6 @@ const lotto = async () => {
 
   console.log('[8] confirming...');
 
-  let bodyHTML = await page.evaluate(() => document.documentElement.outerHTML);
-
-  console.log(bodyHTML);
-
   await page.click(SELECTOR_BUTTONS_FOR_CONFIRM);
 
   try {
@@ -134,6 +133,7 @@ const lotto = async () => {
 
       sendImageToSlack({
         base64fromImage: b64string,
+        message: `설레는 ${getDay()}! 오늘의 로또가 발급됐읍니다. (https://dhlottery.co.kr/myPage.do?method=lottoBuyListView)`,
       });
 
       console.log('[11] job completed!');
