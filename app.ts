@@ -38,7 +38,7 @@ const lotto = async () => {
   console.log(`USER_PASSWORD => ${USER_PW.replace(/./g, '*')}`);
   console.log(`envionment loaded!`);
 
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   console.log('[1] navigate to DH LOTTERY login page...');
@@ -89,10 +89,10 @@ const lotto = async () => {
   }
 
   try {
-    await page.waitForSelector('div#report', {
-      visible: true,
-      timeout: 1000,
-    });
+    // await page.waitForSelector('div#report', {
+    //   visible: true,
+    //   timeout: 1000,
+    // });
 
     await page.evaluate(() => {
       console.log('[9] remove unnecessary elements...');
