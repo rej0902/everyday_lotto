@@ -122,6 +122,7 @@ const lotto = async () => {
       message: '이번주 로또 구매는 실패했습니다.....',
     });
     console.error('[-] job failed!');
+    console.error(error);
   }
 
   await browser.close();
