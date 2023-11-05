@@ -5,7 +5,7 @@ env:
   DH_LOTTERY_PASSWORD: ${{ secrets.JC_PW }}
   AMOUNT_PER_DAY: ${{ vars.AMOUNT_PER_DAY }}
   SLACK_BOT_TOKEN: ${{ vars.SLACK_BOT_TOKEN }}
-  SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
+  SLACK_CHANNEL_ID: ${{ vars.JC_SLACK_CHANNEL }}
 
 on:
   schedule:
