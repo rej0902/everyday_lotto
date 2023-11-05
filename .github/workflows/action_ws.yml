@@ -7,9 +7,10 @@ env:
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   SLACK_CHANNEL_ID: ${{ vars.WS_SLACK_CHANNEL }}
 
-on:
-  schedule:
-    - cron: '55 1 * * 1-5'
+on: push
+  
+  # schedule:
+    # - cron: '55 1 * * 1-5'
 
 jobs:
   lotto:
