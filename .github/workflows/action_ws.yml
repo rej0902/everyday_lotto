@@ -1,4 +1,4 @@
-name: Everyday Lotto
+name: Everyday Lotto - WS
 
 env:
   DH_LOTTERY_USER_ID: ${{ secrets.WS_ID }}
