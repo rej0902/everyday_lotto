@@ -1,0 +1,29 @@
+name: Everyday Lotto - WS
+
+env:
+  DH_LOTTERY_USER_ID: ${{ secrets.WS_ID }}
+  DH_LOTTERY_PASSWORD: ${{ secrets.WS_PW }}
+  AMOUNT_PER_DAY: ${{ vars.AMOUNT_PER_DAY }}
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  SLACK_CHANNEL_ID: ${{ vars.WS_SLACK_CHANNEL }}
+
+on: push
+#  schedule:
+#    - cron: 0 13 * * 6 # every Saturday on 10:00 PM (KST)
+
+jobs:
+  lotto:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm run result
