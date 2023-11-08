@@ -1,4 +1,4 @@
-name: Everyday Lotto - WS
+name: Everyday Lotto Result - WS
 
 env:
   DH_LOTTERY_USER_ID: ${{ secrets.WS_ID }}
@@ -7,12 +7,12 @@ env:
   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   SLACK_CHANNEL_ID: ${{ vars.WS_SLACK_CHANNEL }}
 
-on: push
-#  schedule:
-#    - cron: 0 13 * * 6 # every Saturday on 10:00 PM (KST)
+on:
+  schedule:
+    - cron: 0 13 * * 6 # every Saturday on 10:00 PM (KST)
 
 jobs:
-  lotto:
+  lotto-result:
     runs-on: ubuntu-latest
     strategy:
       matrix:

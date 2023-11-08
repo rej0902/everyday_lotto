@@ -1,4 +1,4 @@
-name: Everyday Lotto - JC
+name: Everyday Lotto Result - JC
 
 env:
   DH_LOTTERY_USER_ID: ${{ secrets.JC_ID }}
@@ -12,7 +12,7 @@ on:
     - cron: 0 13 * * 6 # every Saturday on 10:00 PM (KST)
 
 jobs:
-  lotto:
+  lotto-result:
     runs-on: ubuntu-latest
     strategy:
       matrix:
