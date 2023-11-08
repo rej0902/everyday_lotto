@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "job": "npx ts-node app.ts"
+    "job": "npx ts-node app.ts",
+    "result": "npx ts-node result.ts"
   },
   "keywords": [],
   "author": "",

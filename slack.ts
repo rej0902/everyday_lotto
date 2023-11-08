@@ -50,6 +50,8 @@ const sendImageToSlack = ({
       },
     },
     function (error, response, body) {
+      console.log("성공")
+      console.log(response)
       if (!error && response.statusCode == 200) {
         console.log(`[${ENV_CHANNEL}] Send image to slack completed!`);
       } else {
