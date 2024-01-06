@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import * as dotenv from 'dotenv';
 import { sendImageToSlack, sendMessageToSlack } from './slack';
+import { pick } from './pick';
 dotenv.config();
 
 const URL_LOGIN = 'https://dhlottery.co.kr/user.do?method=login';
@@ -9,7 +10,8 @@ const URL_GAME = 'https://ol.dhlottery.co.kr/olotto/game/game645.do';
 const SELECTOR_ID_FOR_LOGIN = '[name="userId"]';
 const SELECTOR_PASSWORD_FOR_LOGIN = '[name="password"]';
 
-const SELECTOR_BUTTON_FOR_WAY_TO_BUY = 'ul#tabWay2Buy > li:nth-child(2) > a';
+const SELECTOR_BUTTON_FOR_WAY_TO_BUY = 'ul#tabWay2Buy > li:nth-child(1) > a';
+const SELECTOR_BUTTON_LOTTO_NUMBER = Array.from(Array(46), (_, i) => `label[for=check645num${i}]`);
 const SELECTOR_SELECT_FOR_AMOUNT = 'select#amoundApply';
 const SELECTOR_BUTTON_FOR_AMOUNT = 'input#btnSelectNum';
 const SELECTOR_BUTTON_FOR_BUY = 'input#btnBuy';
@@ -46,6 +48,7 @@ const lotto = async () => {
   console.log(`envionment loaded!`);
 
   const browser = await puppeteer.launch({ headless: 'new' });
+  // const browser = await puppeteer.launch({ headless: false });
 
   const page = await browser.newPage();
 
@@ -87,12 +90,24 @@ const lotto = async () => {
 
   await page.click(SELECTOR_BUTTON_FOR_WAY_TO_BUY);
 
-  console.log(`[6] 사장님 자동 ${AMOUNT}게임요~~`);
+  // console.log(`[6] 사장님 자동 ${AMOUNT}게임요~~`);
+  // await page.select(SELECTOR_SELECT_FOR_AMOUNT, AMOUNT);
+  // await page.click(SELECTOR_BUTTON_FOR_AMOUNT);
 
-  await page.select(SELECTOR_SELECT_FOR_AMOUNT, AMOUNT);
+  console.log(`[6] 사장님 수동 ${AMOUNT}게임요~~`);
 
-  await page.click(SELECTOR_BUTTON_FOR_AMOUNT);
+  for (var i = 0; i < parseInt(AMOUNT); i++) {
+    const numbers = pick();
 
+    for (const n of numbers) {
+      await page.click(SELECTOR_BUTTON_LOTTO_NUMBER[n]);
+    }
+
+    await page.select(SELECTOR_SELECT_FOR_AMOUNT, AMOUNT);
+    await page.click(SELECTOR_BUTTON_FOR_AMOUNT);
+  }
+
+  await page.waitForSelector(SELECTOR_BUTTON_FOR_BUY);
   await page.click(SELECTOR_BUTTON_FOR_BUY);
 
   console.log('[7] waiting for confirm...');
